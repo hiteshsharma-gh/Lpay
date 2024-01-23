@@ -64,6 +64,59 @@ router.post('/signup', async (req, res) => {
   }
 })
 
+const signinBody = z.object({
+  username: z.string().email(),
+  password: z.string().min(6)
+})
+
+router.post('/signin', async (req, res) => {
+  const { username, password } = req.body;
+
+  const { success } = signinBody.safeParse(req.body);
+
+  if (!success) {
+    res.status(411).json({
+      message: 'invalid inputs'
+    })
+  }
+
+  try {
+    const user = await User.findOne({
+      username
+    })
+
+    if (!user) {
+      return res.status(411).json({
+        message: 'invalid credentials'
+      })
+    }
+
+    bcrypt.compare(password, user.password, function(err, result) {
+      if (err) {
+        return res.json({
+          message: 'error while comparing hash'
+        })
+      }
+
+      if (!result) {
+        return res.status(411).json({
+          message: 'invalid credentials'
+        })
+      }
+
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
+
+      res.status(200).json({
+        token
+      })
+    })
+  } catch (error) {
+    res.status(411).json({
+      message: 'Error while logging in'
+    })
+  }
+})
+
 module.exports = {
   router
 }
