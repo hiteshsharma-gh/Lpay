@@ -1,8 +1,9 @@
-import User from '../models/user.model.js'
+import 'dotenv/config';
+import User from '../models/user.model.js';
 import { Router } from 'express';
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
-import z from 'zod'
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import z from 'zod';
 
 const app = express();
 
@@ -15,7 +16,7 @@ const signupBody = z.object({
   password: z.string().min(6),
   firstName: z.string().max(50),
   lastName: z.string().max(50)
-})
+});
 
 router.post('/signup', async (req, res) => {
   const { username, password, firstName, lastName } = req.body;
@@ -27,7 +28,7 @@ router.post('/signup', async (req, res) => {
     })
   }
 
-  const userExists = await User.findOne({ username: username, password: password })
+  const userExists = await User.findOne({ username: username, password: password });
 
   if (userExists) {
     return res.status(411).json({
@@ -48,9 +49,9 @@ router.post('/signup', async (req, res) => {
         password: hash,
         firstName,
         lastName
-      })
+      });
 
-      const token = jwt.sign({ userId: createUser._id }, process.env.JWT_SECRET)
+      const token = jwt.sign({ userId: createUser._id }, process.env.JWT_SECRET);
 
       res.status(200).json({
         message: 'User created successfully',
@@ -67,7 +68,7 @@ router.post('/signup', async (req, res) => {
 const signinBody = z.object({
   username: z.string().email(),
   password: z.string().min(6)
-})
+});
 
 router.post('/signin', async (req, res) => {
   const { username, password } = req.body;
@@ -83,7 +84,7 @@ router.post('/signin', async (req, res) => {
   try {
     const user = await User.findOne({
       username
-    })
+    });
 
     if (!user) {
       return res.status(411).json({
@@ -104,7 +105,7 @@ router.post('/signin', async (req, res) => {
         })
       }
 
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
       res.status(200).json({
         token
