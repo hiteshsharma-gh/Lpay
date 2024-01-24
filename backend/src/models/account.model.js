@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 const accountSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
+    required: true
   },
   balance: {
     type: Number,
+    required: true,
     default: 0
   }
 })
