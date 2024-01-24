@@ -154,6 +154,32 @@ router.put('/', authMiddlware, async (req, res) => {
   }
 })
 
+router.get('/bulk', async (req, res) => {
+  const filterName = req.query.filter || "";
+
+  const users = await User.find({
+    $or: [{
+      firstName: {
+        $regex: filterName
+      }
+    }, {
+      lastName: {
+        $regex: filterName
+      }
+    }]
+  }).select('username firstName lastName')
+
+  if (!users) {
+    res.json({
+      message: 'User not found'
+    })
+  }
+
+  res.status(200).json({
+    users
+  })
+})
+
 module.exports = {
   router
 }
