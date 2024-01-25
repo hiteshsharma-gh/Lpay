@@ -2,9 +2,9 @@ import express from 'express'
 
 import rootRouter from './routes/index.js'
 import userRouter from './routes/user.routes.js'
+import accountRouter from './routes/account.routes.js'
 
 import cors from 'cors'
-import { error } from 'console'
 
 const app = express()
 const whitelist = process.evn.CORS_ORIGIN;
@@ -22,6 +22,7 @@ app.use(cors({
 
 app.use('/api/v1/', rootRouter);
 app.use('/api/v1/user/', userRouter);
+app.use('/api/v1/account', accountRouter);
 
 module.exports = {
   app

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
-import { Router } from 'express';
+import express from 'express';
 import jwt from 'jsonwebtoken';
 import z from 'zod';
 import authMiddlware from '../middlewares/authMiddleware.js';
@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 
-const router = Router();
+const router = express.Router();
 
 const signupBody = z.object({
   username: z.string().email(),
