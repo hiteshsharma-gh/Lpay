@@ -1,6 +1,6 @@
 import express from 'express'
 
-import rootRouter from './routes/index.js'
+import healthcheckRouter from './routes/healthcheck.routes.js'
 import userRouter from './routes/user.routes.js'
 import accountRouter from './routes/account.routes.js'
 
@@ -20,7 +20,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use('/api/v1/', rootRouter);
+app.use('/api/v1/healthcheck', healthcheckRouter);
 app.use('/api/v1/user/', userRouter);
 app.use('/api/v1/account', accountRouter);
 
