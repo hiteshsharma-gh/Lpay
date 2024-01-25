@@ -1,10 +1,11 @@
+import bcrypt from 'bcrypt';
 import 'dotenv/config';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import z from 'zod';
+import authMiddlware from '../middlewares/authMiddleware.js';
 import User from '../models/user.model.js';
-import authMiddlware from '../middlewares/authMiddleware.js'
+import Account from '../models/account.model.js'
 
 const app = express();
 
@@ -48,6 +49,13 @@ router.post('/signup', async (req, res) => {
     });
 
     const token = jwt.sign({ userId: createUser._id }, process.env.JWT_SECRET);
+
+    const randomBalance = Math.floor(Math.random() * 10000) + 1;
+
+    const Balance = await Account.create({
+      userId: createUser._id,
+      balance: randomBalance
+    })
 
     res.status(200).json({
       message: 'User created successfully',
