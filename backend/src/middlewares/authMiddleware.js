@@ -2,11 +2,11 @@ import 'dotenv/config';
 import jwt from "jsonwebtoken";
 
 function authMiddleware(req, res, next) {
-  const authorization = req.headers.Authorization;
+  const authorization = req.headers.authorization;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
     res.status(403).json({
-      message: 'unauthorized request'
+      message: 'unauthorized request/ not a bearer token'
     })
   }
 
@@ -25,6 +25,4 @@ function authMiddleware(req, res, next) {
   }
 }
 
-module.exports = {
-  authMiddleware
-}
+export default authMiddleware
