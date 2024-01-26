@@ -7,9 +7,13 @@ import accountRouter from './routes/account.routes.js'
 import cors from 'cors'
 
 const app = express()
-// const whitelist = process.evn.CORS_ORIGIN;
+
+app.use(express.json())
 
 app.use(cors())
+
+// const whitelist = process.evn.CORS_ORIGIN;
+
 // app.use(cors({
 //   origin: function(origin, callback) {
 //     if (whitelist.indexOf(origin) !== -1) {
@@ -25,6 +29,4 @@ app.use('/api/v1/healthcheck', healthcheckRouter);
 app.use('/api/v1/user/', userRouter);
 app.use('/api/v1/account', accountRouter);
 
-module.exports = {
-  app
-}
+export default app
