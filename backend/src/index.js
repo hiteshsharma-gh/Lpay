@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 const main = async () => {
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI}/${process.env.DB_NAME}`)
+    await mongoose.connect(`${process.env.MONGODB_URI}`)
   } catch (error) {
     console.log("mongodb connection failed", error)
   }
@@ -12,7 +12,7 @@ const main = async () => {
 main()
   .then(() => {
     app.listen(process.env.PORT || 8000, (req, res) => {
-      console.log(`server is listening on port ${process.evn.PORT}`)
+      console.log(`server is listening`)
     })
   })
   .catch((err) => {
