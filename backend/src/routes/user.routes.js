@@ -9,8 +9,6 @@ import Account from '../models/account.model.js'
 
 const app = express();
 
-app.use(express.json());
-
 const router = express.Router();
 
 const signupBody = z.object({
@@ -22,26 +20,27 @@ const signupBody = z.object({
 
 router.post('/signup', async (req, res) => {
   const { username, password, firstName, lastName } = req.body;
+
   const { success } = signupBody.safeParse(req.body);
 
   if (!success) {
     return res.status(411).json({
-      message: "Email already taken / incorrect inputs"
+      message: "invalid inputs"
     })
   }
 
-  const userExists = await User.findOne({ username: username, password: password });
+  const userExists = await User.findOne({ username: username });
 
   if (userExists) {
     return res.status(411).json({
-      message: "Email already taken / incorrect inputs"
+      message: "Email already taken"
     })
   }
 
   try {
-    const hash = bcrypt.hashSync(password, process.env.SALT_ROUNDS)
+    const hash = bcrypt.hashSync(password, 10)
 
-    const createUser = User.create({
+    const createUser = await User.create({
       username,
       password: hash,
       firstName,
@@ -50,9 +49,10 @@ router.post('/signup', async (req, res) => {
 
     const token = jwt.sign({ userId: createUser._id }, process.env.JWT_SECRET);
 
-    const randomBalance = Math.floor(Math.random() * 10000) + 1;
+    const randomBalance = Math.floor(Math.random() * 100000000) + 1;
+    // the amount will be recorded upto four decimal places .
 
-    const Balance = await Account.create({
+    await Account.create({
       userId: createUser._id,
       balance: randomBalance
     })
@@ -116,7 +116,7 @@ router.post('/signin', async (req, res) => {
 })
 
 const updateBody = z.object({
-  password: z.string().email().optional(),
+  password: z.string().optional(),
   firstName: z.string().max(50).optional(),
   lastName: z.string().max(50).optional()
 })
@@ -140,7 +140,7 @@ router.put('/', authMiddlware, async (req, res) => {
   }
 
   if (password) {
-    const hash = bcrypt.hashSync(password, process.env.SALT_ROUNDS)
+    const hash = bcrypt.hashSync(password, 10)
 
     updateBody.password = hash
   }
@@ -188,6 +188,4 @@ router.get('/bulk', async (req, res) => {
   })
 })
 
-module.exports = {
-  router
-}
+export default router
