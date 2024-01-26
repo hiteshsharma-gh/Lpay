@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
-import { authMiddleware } from '../middlewares/authMiddleware.js'
-import { Account } from '../models/account.model.js'
+import authMiddleware from '../middlewares/authMiddleware.js'
+import Account from '../models/account.model.js'
 
 const app = express()
 const router = express.Router()
@@ -13,7 +13,7 @@ router.get('/balance', authMiddleware, async (req, res) => {
   const userId = req.userId;
 
   try {
-    const userBalance = Account.findOne({
+    const userBalance = await Account.findOne({
       userId
     })
 
@@ -39,29 +39,29 @@ router.post('/transfer', authMiddleware, async (req, res) => {
     { userId }
   ).session(session)
 
+  if (!senderAccount || senderAccount.balance < amount) {
+    await session.abortTransaction();
+    res.status(400).json({
+      message: 'Insufficient balance'
+    })
+  }
+
   const receiverAccount = await Account.findOne(
     { userId: to }
   ).session(session)
 
   if (!receiverAccount) {
-    session.abortTransaction();
+    await session.abortTransaction();
     res.status(400).json({
       message: 'Invalid Account'
-    })
-  }
-
-  if (!senderAccount || senderAccount.balance < amount) {
-    session.abortTransaction();
-    res.status(400).json({
-      message: 'Insufficient balance'
     })
   }
 
   await Account.updateOne(
     { userId },
     {
-      balance: {
-        $inc: -amount
+      $inc: {
+        balance: -amount
       }
     }
   ).session(session)
@@ -69,21 +69,19 @@ router.post('/transfer', authMiddleware, async (req, res) => {
   await Account.updateOne(
     { userId: to },
     {
-      balance: {
-        $inc: amount
+      $inc: {
+        balance: amount
       }
     }
   ).session(session)
 
-  session.commitTransaction();
+  await session.commitTransaction();
 
   res.status(200).json({
     message: 'transfer successful'
   })
 
-  session.endSession();
+  await session.endSession();
 })
 
-module.exports = {
-  router
-}
+export default router
