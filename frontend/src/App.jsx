@@ -1,17 +1,20 @@
-import { BrowserRouter, Routes } from 'react-router-dom'
+import { lazy } from 'react'
+import { Routes, Route } from 'react-router-dom'
+
+const Signup = lazy(() => import('./components/Signup.jsx'))
+const Signin = lazy(() => import('./components/Signin.jsx'))
+const Dashboard = lazy(() => import('./components/Dashboard.jsx'))
+const SendMoney = lazy(() => import('./components/SendMoney.jsx'))
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/signin' element={<Signin />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/send' element={<Send />} />
-      </Routes>
-    </BrowserRouter>
-
+    <Routes>
+      <Route path='/signup' element={<Signup />} />
+      <Route path='/signin' element={<Signin />} />
+      <Route path='/dashboard' element={<Dashboard />} />
+      <Route path='/send' element={<SendMoney />} />
+    </Routes>
   )
 }
 
