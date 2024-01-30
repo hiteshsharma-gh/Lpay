@@ -8,7 +8,7 @@ import BottomWarning from './BottomWarning.jsx'
 function Signup() {
   return (
     <div className='h-screen w-full bg-zinc-500 flex justify-center items-center '>
-      <div className='bg-white h-fit w-80 rounded-xl flex flex-col items-center px-0 py-0'>
+      <div className='bg-white h-fit w-[22rem] rounded-xl flex flex-col items-center px-0 py-0'>
         <Heading heading="Sign Up" />
         <SubHeading subheading="Enter your information to create an account" />
         <InputBox id='firstname' label='First Name' placeholder='John' />
