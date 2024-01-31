@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 const Signup = lazy(() => import('./components/Signup.jsx'))
@@ -9,12 +9,14 @@ const SendMoney = lazy(() => import('./components/SendMoney.jsx'))
 function App() {
 
   return (
-    <Routes>
-      <Route path='/signup' element={<Signup />} />
-      <Route path='/signin' element={<Signin />} />
-      <Route path='/dashboard' element={<Dashboard />} />
-      <Route path='/send' element={<SendMoney />} />
-    </Routes>
+    <Suspense>
+      <Routes>
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/signin' element={<Signin />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/send' element={<SendMoney />} />
+      </Routes>
+    </Suspense>
   )
 }
 

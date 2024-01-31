@@ -1,4 +1,3 @@
-import React from 'react'
 import Heading from './Heading'
 import SubHeading from './SubHeading'
 import InputBox from './InputBox'
@@ -11,8 +10,8 @@ function Singin() {
       <div className='bg-white h-fit w-96 rounded-xl flex flex-col items-center px-0 py-0'>
         <Heading heading="Sign In" />
         <SubHeading subheading="Enter your credentials to access you account" />
-        <InputBox id="email" label="Email" placeholder="" />
-        <InputBox id="password" label="Email" placeholder="johndoe@example.com" />
+        <InputBox id="email" label="Email" placeholder="johndoe@example.com" />
+        <InputBox id="password" label="Password" placeholder="" />
         <Button text="Sign In" />
         <BottomWarning text="Don't have an account?" link="Sign Up" />
       </div>

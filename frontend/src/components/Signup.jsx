@@ -1,4 +1,3 @@
-import React from 'react'
 import Heading from './Heading'
 import SubHeading from './SubHeading'
 import InputBox from './InputBox'
@@ -16,7 +15,7 @@ function Signup() {
         <InputBox id='email' label='Email' placeholder='johndoe@example.com' />
         <InputBox id='password' label='Password' placeholder='' />
         <Button text='Sign Up' />
-        <BottomWarning text='Already have an account? ' link='Login' />
+        <BottomWarning text='Already have an account? ' link='Sign In' />
       </div>
     </div>
   )
