@@ -18,7 +18,7 @@ router.get('/balance', authMiddleware, async (req, res) => {
     })
 
     res.status(200).json({
-      balance: userBalance.balance
+      balance: userBalance.balance / 10000
     })
   } catch (error) {
     res.status(411).json({
