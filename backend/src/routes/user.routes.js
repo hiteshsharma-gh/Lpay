@@ -7,8 +7,6 @@ import authMiddlware from '../middlewares/authMiddleware.js';
 import User from '../models/user.model.js';
 import Account from '../models/account.model.js'
 
-const app = express();
-
 const router = express.Router();
 
 const signupBody = z.object({
