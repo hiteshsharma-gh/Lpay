@@ -1,6 +1,10 @@
+import Navbar from "./Navbar"
+
 function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <div>
+      <Navbar heading='Light Pay' firstName='User' greating='Hello, User' />
+    </div>
   )
 }
 
