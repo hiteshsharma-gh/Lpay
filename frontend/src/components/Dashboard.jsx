@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar"
 function Dashboard() {
   return (
     <div>
-      <Navbar heading='Light Pay' firstName='User' greating='Hello, User' />
+      <Navbar heading='Light Pay' firstName='User' lastName='User' greating='Hello, User' />
       <Balance balance='5000' />
       <SearchBar />
     </div>

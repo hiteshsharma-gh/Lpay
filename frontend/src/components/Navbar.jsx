@@ -1,8 +1,8 @@
 function Navbar(props) {
-  const logo = props.firstName[0];
+  const logo = (props.lastName ? props.firstName[0] + props.lastName[0] : props.firstName[0]);
 
   return (
-    <header className='sticky top-0 z-50 bg-white w-screen h-fit flex justify-between border-gray-100 border-b px-10 py-6'>
+    <header className='sticky top-0 z-50 bg-white w-screen h-fit flex justify-between border-gray-300 border-b px-10 py-6'>
       <h1 className='font-bold text-4xl '>{props.heading}</h1>
       <div className='flex gap-3 justify-center items-center'>
         <h3 className='font-medium text-lg'>{props.greating}</h3>
