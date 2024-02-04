@@ -1,13 +1,10 @@
-import { startTransition } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Button(props) {
   const navigate = useNavigate();
 
   function handleClick() {
-    startTransition(() => {
-      navigate('/dashboard')
-    })
+    navigate('/dashboard')
   }
 
   return (
