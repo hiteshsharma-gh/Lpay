@@ -4,7 +4,11 @@ function Button(props) {
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate('/dashboard')
+    if (props.text === "Send Money") {
+      navigate("/sendmoney")
+    } else {
+      navigate("/dashboard")
+    }
   }
 
   return (
