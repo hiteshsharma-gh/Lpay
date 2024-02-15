@@ -10,7 +10,7 @@ function Users(props) {
         <p className='font-semibold text-lg'>{`${props.firstName} ${props.lastName}`}</p>
       </div>
       <div className='w-32 h-fit flex justify-end'>
-        <Button text='Send Money' />
+        <Button text='Send Money' lastName={props.lastName} firstName={props.firstName} />
       </div>
     </div>
   )
