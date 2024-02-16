@@ -61,7 +61,7 @@ router.post('/signup', async (req, res) => {
     })
   } catch (error) {
     res.json({
-      message: 'error while creating user'
+      message: `error while creating user: ${error}`
     })
   }
 })
@@ -103,12 +103,13 @@ router.post('/signin', async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
+    console.log(`user signed in successfully: ${username}, ${password}`)
     res.status(200).json({
       token
     })
   } catch (error) {
     res.status(411).json({
-      message: 'Error while logging in'
+      message: `error while loggin user: ${error}`
     })
   }
 })
