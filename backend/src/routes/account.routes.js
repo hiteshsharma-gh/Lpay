@@ -30,7 +30,9 @@ router.get('/balance', authMiddleware, async (req, res) => {
 router.post('/transfer', authMiddleware, async (req, res) => {
   const { to, amount } = req.body;
   const userId = req.userId;
+  console.log(req.body, "/n", req.userId)
 
+  console.log("arrived at start")
   const session = await mongoose.startSession();
 
   session.startTransaction();
@@ -77,6 +79,7 @@ router.post('/transfer', authMiddleware, async (req, res) => {
 
   await session.commitTransaction();
 
+  console.log("trasfer successful")
   res.status(200).json({
     message: 'transfer successful'
   })
