@@ -12,7 +12,17 @@ function SearchBar() {
     axios.get(`http://localhost:8080/api/v1/user/bulk?filter=${searchUser}`)
       .then((response) => {
         if (response.status == 200)
-          setUsers(response.data.users)
+          console.log(response.data.users)
+        setUsers(response.data.users)
+      })
+  }, [])
+
+  useEffect(() => {
+    axios.get(`http://localhost:8080/api/v1/user/bulk?filter=${searchUser}`)
+      .then((response) => {
+        if (response.status == 200)
+          console.log(response.data.users)
+        setUsers(response.data.users)
       })
   }, [searchUser])
 

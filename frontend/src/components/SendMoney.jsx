@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil"
 import amountAtom from "../atoms/amount.atom.js"
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { useMemo } from "react";
 
 function Send() {
   const navigate = useNavigate();
@@ -10,13 +11,16 @@ function Send() {
   const to = searchParams.get("to")
   const name = searchParams.get("name")
 
-  const logo = name.split(" ")[0][0] + name.split(" ")[1][0];
+  const logo = useMemo(() => {
+    return name.split(" ")[0][0] + name.split(" ")[1][0];
+  }, [name]);
 
   const [amount, setAmount] = useRecoilState(amountAtom)
 
   function handleChange(e) {
     const value = e.target.value;
-    setAmount(value)
+    const money = parseInt(value)
+    setAmount(money)
   }
 
   function handleClick() {
@@ -33,6 +37,7 @@ function Send() {
     })
       .then(response => {
         if (response.status == 200) {
+          console.log(response)
           navigate("/dashboard")
         }
       })

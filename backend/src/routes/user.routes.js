@@ -103,7 +103,6 @@ router.post('/signin', async (req, res) => {
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
-    console.log(`user signed in successfully: ${username}, ${password}`)
     res.status(200).json({
       token
     })
@@ -174,7 +173,7 @@ router.get('/bulk', async (req, res) => {
         $regex: filterName
       }
     }]
-  }).select('username firstName lastName')
+  }).select('username firstName lastName _id')
 
   if (!users) {
     res.json({

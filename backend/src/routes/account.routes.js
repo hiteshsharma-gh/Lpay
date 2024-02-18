@@ -28,63 +28,39 @@ router.get('/balance', authMiddleware, async (req, res) => {
 })
 
 router.post('/transfer', authMiddleware, async (req, res) => {
-  const { to, amount } = req.body;
-  const userId = req.userId;
-  console.log(req.body, "/n", req.userId)
-
-  console.log("arrived at start")
   const session = await mongoose.startSession();
 
   session.startTransaction();
+  const { amount, to } = req.body;
 
-  const senderAccount = await Account.findOne(
-    { userId }
-  ).session(session)
+  // Fetch the accounts within the transaction
+  const account = await Account.findOne({ userId: req.userId }).session(session);
 
-  if (!senderAccount || senderAccount.balance < amount) {
+  if (!account || account.balance < amount) {
     await session.abortTransaction();
-    res.status(400).json({
-      message: 'Insufficient balance'
-    })
+    return res.status(400).json({
+      message: "Insufficient balance"
+    });
   }
 
-  const receiverAccount = await Account.findOne(
-    { userId: to }
-  ).session(session)
+  const toAccount = await Account.findOne({ userId: to }).session(session);
 
-  if (!receiverAccount) {
+  if (!toAccount) {
     await session.abortTransaction();
-    res.status(400).json({
-      message: 'Invalid Account'
-    })
+    return res.status(400).json({
+      message: "Invalid account"
+    });
   }
 
-  await Account.updateOne(
-    { userId },
-    {
-      $inc: {
-        balance: -amount
-      }
-    }
-  ).session(session)
+  // Perform the transfer
+  await Account.updateOne({ userId: req.userId }, { $inc: { balance: -amount } }).session(session);
+  await Account.updateOne({ userId: to }, { $inc: { balance: amount } }).session(session);
 
-  await Account.updateOne(
-    { userId: to },
-    {
-      $inc: {
-        balance: amount
-      }
-    }
-  ).session(session)
-
+  // Commit the transaction
   await session.commitTransaction();
-
-  console.log("trasfer successful")
-  res.status(200).json({
-    message: 'transfer successful'
-  })
-
-  await session.endSession();
+  res.json({
+    message: "Transfer successful"
+  });
 })
 
 export default router
