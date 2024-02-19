@@ -15,7 +15,6 @@ function Button(props) {
     if (props.text === "Send Money") {
       navigate(`/send?to=${props.id}&name=${props.firstName + " " + props.lastName}`)
     } else if (props.text === "Sign Up") {
-      console.log(firstName, lastName, email, password)
       axios({
         method: "post",
         url: "http://localhost:8080/api/v1/user/signup",
@@ -28,7 +27,6 @@ function Button(props) {
       })
         .then((response) => {
           if (response.status == 200) {
-            console.log(response.data)
             localStorage.setItem("token", "Bearer " + response.data.token)
             navigate("/dashboard")
           }
@@ -44,7 +42,6 @@ function Button(props) {
       })
         .then((response) => {
           if (response.status == 200) {
-            console.log(response.data)
             localStorage.setItem("token", "Bearer " + response.data.token)
             navigate("/dashboard")
           }

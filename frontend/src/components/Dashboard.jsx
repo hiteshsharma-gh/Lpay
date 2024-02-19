@@ -7,7 +7,6 @@ import { useEffect, useState } from "react"
 function Dashboard() {
   const [balance, setBalance] = useState(0)
 
-  console.log(localStorage.getItem("token"))
   useEffect(() => {
     axios({
       method: "get",
@@ -17,6 +16,7 @@ function Dashboard() {
       }
     })
       .then(response => {
+        console.log(response.data)
         if (response.status == 200) {
           setBalance(response.data.balance)
         }
