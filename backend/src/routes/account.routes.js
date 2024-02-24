@@ -71,6 +71,7 @@ router.post('/transfer', authMiddleware, async (req, res) => {
 
   // commit Transaction
   await session.commitTransaction();
+  await session.endSession();
 
   return res.status(200).json({
     message: "Transaction Successfull"
